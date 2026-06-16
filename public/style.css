@@ -1,0 +1,583 @@
+/* ============================================================
+   POCKET BUNNY AI — style.css
+   Soft, premium, romantic. Mobile-first, glass-on-blush.
+   All theme values live in :root so wording/warmth is a
+   one-line edit. Only transform/opacity are animated.
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   1. Theme tokens
+   ---------------------------------------------------------- */
+:root {
+  /* — Core romantic hues — */
+  --bunny-cream:     #FFF7F2;
+  --bunny-peach:     #FFE8DC;
+  --bunny-blush:     #FFD9E2;
+  --bunny-rose:      #F7A8C4;
+  --bunny-rose-deep: #E4789F;  /* decorative accents (rings, dots) */
+  --bunny-rose-strong: #C04E7C; /* fills/text needing contrast — white text ≥4.5:1 */
+  --bunny-lavender:  #E3DBFB;
+  --bunny-lilac:     #C9B8F2;
+  --bunny-gold:      #E8B86D;
+  --bunny-gold-soft: #F3D9A8;
+
+  /* — Ink / text — */
+  --ink-900: #4A2C3A;
+  --ink-700: #6E4A58;
+  --ink-500: #6E5160;  /* microcopy — darkened to clear WCAG AA on the gradient */
+  --ink-on-rose: #FFFFFF;
+
+  /* — Functional — */
+  --bunny-focus:  #B57BD6;
+  --bunny-danger: #C0556B;
+  --bunny-ok:     #6FB58A;
+
+  /* — Glass — */
+  --glass-bg:        rgba(255, 255, 255, 0.55);
+  --glass-bg-strong: rgba(255, 255, 255, 0.72);
+  --glass-border:    1px solid rgba(255, 255, 255, 0.70);
+  --glass-blur:      blur(18px) saturate(135%);
+  --glass-radius:    22px;
+  --glass-radius-sm: 16px;
+  --glass-shadow:
+      0 8px 28px rgba(180, 110, 140, 0.18),
+      0 2px 6px  rgba(180, 110, 140, 0.10),
+      inset 0 1px 0 rgba(255, 255, 255, 0.65);
+
+  /* — Type — */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body:    'Poppins', system-ui, -apple-system, Segoe UI, sans-serif;
+
+  /* — Easings — */
+  --ease-out:    cubic-bezier(.22, .61, .36, 1);
+  --ease-spring: cubic-bezier(.34, 1.56, .64, 1);
+}
+
+/* ----------------------------------------------------------
+   2. Reset & base
+   ---------------------------------------------------------- */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--ink-900);
+  background:
+    linear-gradient(155deg, var(--bunny-cream) 0%, var(--bunny-peach) 60%, var(--bunny-blush) 100%);
+  background-attachment: fixed;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* the slow "dreamy" drift behind everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -12%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 12% 6%,  var(--bunny-blush)    0%, transparent 55%),
+    radial-gradient(60% 55% at 92% 96%, var(--bunny-lavender) 0%, transparent 55%);
+  animation: drift 24s ease-in-out infinite alternate;
+}
+
+img, svg { display: block; max-width: 100%; }
+button, input { font: inherit; color: inherit; }
+button { cursor: pointer; border: none; background: none; }
+
+/* visually-hidden (screen-reader only) */
+.vh {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+/* shared focus ring */
+:focus-visible {
+  outline: 3px solid var(--bunny-focus);
+  outline-offset: 2px;
+  border-radius: inherit;
+}
+
+/* ----------------------------------------------------------
+   3. Glass utility
+   ---------------------------------------------------------- */
+.glass {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: var(--glass-radius);
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+.glass-strong { background: var(--glass-bg-strong); }
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .glass        { background: rgba(255, 252, 250, 0.95); }
+  .glass-strong { background: rgba(255, 252, 250, 0.98); }
+}
+
+/* ----------------------------------------------------------
+   4. App shell
+   ---------------------------------------------------------- */
+.app {
+  width: 100%;
+  max-width: 440px;
+  margin-inline: auto;
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: auto auto auto 1fr auto auto; /* header · greeting · moods · chat · composer · note */
+  position: relative;
+  overflow: hidden;
+}
+
+/* floating "phone" frame on larger screens */
+@media (min-width: 480px) {
+  body { padding: 24px 0; }
+  .app {
+    height: min(880px, calc(100dvh - 48px));
+    border-radius: 28px;
+    overflow: hidden;
+    box-shadow: 0 30px 80px rgba(180, 110, 140, 0.22);
+  }
+}
+
+/* ----------------------------------------------------------
+   5. Header
+   ---------------------------------------------------------- */
+.app-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: 0 0 18px 18px;
+  z-index: 5;
+}
+
+.avatar {
+  position: relative;
+  width: 44px; height: 44px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: var(--bunny-blush);
+  box-shadow: 0 0 0 2px var(--bunny-rose-deep), 0 4px 10px rgba(180, 110, 140, 0.25);
+  display: grid; place-items: center;
+  transition: transform 120ms var(--ease-out);
+}
+.avatar:active { transform: scale(.94); }
+.avatar .bunny-svg { width: 34px; height: 34px; }
+.avatar.hug { animation: hugPunch 420ms var(--ease-spring); }
+
+.avatar-status {
+  position: absolute;
+  right: 1px; bottom: 1px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  background: var(--bunny-ok);
+  box-shadow: 0 0 0 2px #fff;
+}
+
+.brand { flex: 1 1 auto; min-width: 0; }
+.brand h1 {
+  font-family: var(--font-display);
+  font-size: 22px; font-weight: 700;
+  line-height: 1.1; letter-spacing: .2px;
+  color: var(--ink-900);
+}
+.brand .status {
+  font-size: 12px; font-weight: 400;
+  color: var(--ink-500); line-height: 1.2;
+}
+
+.header-action {
+  flex: 0 0 auto;
+  width: 44px; height: 44px;            /* ≥44px tap target */
+  display: grid; place-items: center;
+  border-radius: 50%;
+  color: var(--ink-500);
+  transition: background-color 160ms, color 160ms, transform 120ms var(--ease-out);
+}
+.header-action:hover { color: var(--bunny-rose-strong); background: rgba(255, 255, 255, .5); }
+.header-action:active { transform: scale(.92); }
+
+/* ----------------------------------------------------------
+   6. Greeting
+   ---------------------------------------------------------- */
+.greeting { padding: 18px 18px 8px; }
+.greeting-title {
+  font-family: var(--font-display);
+  font-style: italic; font-weight: 600;
+  font-size: 26px; line-height: 1.25;
+  color: var(--ink-900);
+  animation: fadeUp 420ms var(--ease-out) both;
+}
+.greeting-sub {
+  margin-top: 4px;
+  font-size: 14px; font-weight: 300;
+  color: var(--ink-700); line-height: 1.45;
+  animation: fadeUp 420ms var(--ease-out) 120ms both;
+}
+.daily-btn {
+  margin-top: 12px;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 16px; min-height: 44px;
+  font-size: 13px; font-weight: 600;
+  color: var(--ink-700);
+  background: var(--glass-bg);
+  border: 1px solid var(--bunny-gold);
+  border-radius: 999px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 3px 10px rgba(232, 184, 109, .25);
+  transition: transform 140ms var(--ease-out), box-shadow 160ms;
+  animation: fadeUp 420ms var(--ease-out) 220ms both;
+}
+.daily-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(232, 184, 109, .35); }
+.daily-btn:active { transform: scale(.96); }
+
+/* ----------------------------------------------------------
+   7. Mood chips
+   ---------------------------------------------------------- */
+.moods {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  padding: 4px 18px 12px;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(90deg, #000 0, #000 92%, transparent 100%);
+}
+.moods::-webkit-scrollbar { display: none; }
+
+.chip {
+  flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 10px 16px; min-height: 44px;   /* ≥44px tap target */
+  font-size: 13px; font-weight: 600; white-space: nowrap;
+  color: var(--ink-700);
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  border-radius: 999px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: 0 3px 10px rgba(180, 110, 140, .14);
+  transition: transform 160ms var(--ease-out), background-color 180ms, color 180ms, box-shadow 180ms;
+}
+.chip .chip-emoji { font-size: 15px; line-height: 1; }
+.chip:hover { transform: translateY(-2px); box-shadow: 0 6px 14px rgba(180, 110, 140, .22); }
+.chip:active { transform: scale(.95); }
+.chip.is-active {
+  background: var(--bunny-rose-strong);
+  color: var(--ink-on-rose);
+  border-color: transparent;
+}
+
+/* ----------------------------------------------------------
+   8. Chat log & bubbles
+   ---------------------------------------------------------- */
+.chat {
+  overflow-y: auto;
+  padding: 8px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  scroll-behavior: smooth;
+}
+
+.empty-chat {
+  margin: auto;
+  max-width: 280px;
+  text-align: center;
+  font-size: 14px; color: var(--ink-500);
+  line-height: 1.5;
+}
+
+.msg {
+  display: flex;
+  max-width: 100%;
+  animation: msgIn 320ms var(--ease-out) both;
+}
+.msg-her   { justify-content: flex-end; }
+.msg-bunny { justify-content: flex-start; }
+
+.bubble {
+  max-width: 82%;
+  padding: 10px 14px;
+  font-size: 15px; line-height: 1.5;
+  border-radius: 18px;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+}
+.msg-her .bubble {
+  max-width: 80%;
+  background: var(--bunny-rose-strong);
+  color: var(--ink-on-rose);
+  border-bottom-right-radius: 6px;
+  box-shadow: 0 4px 12px rgba(192, 78, 124, .30);
+}
+.msg-bunny .bubble {
+  background: var(--glass-bg);
+  border: var(--glass-border);
+  color: var(--ink-900);
+  border-bottom-left-radius: 6px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+}
+
+/* special "daily note" bubble */
+.bubble.daily-note {
+  font-family: var(--font-display);
+  font-style: italic; font-size: 16px; line-height: 1.55;
+  border-left: 3px solid var(--bunny-gold);
+}
+.daily-sign {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--font-body);
+  font-style: normal; font-size: 12px;
+  color: var(--ink-500);
+  text-align: right;
+}
+
+/* typing indicator */
+.typing { display: inline-flex; align-items: center; gap: 8px; padding: 11px 15px; }
+.typing-text { font-size: 13px; color: var(--ink-700); }
+.typing .dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--bunny-rose-deep);
+  animation: typingBounce 1.2s ease-in-out infinite;
+}
+.typing .dot:nth-child(3) { animation-delay: .15s; }
+.typing .dot:nth-child(4) { animation-delay: .30s; }
+
+/* ----------------------------------------------------------
+   9. Composer
+   ---------------------------------------------------------- */
+.composer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 12px;
+  padding: 6px 6px 6px 8px;
+  border-radius: 24px;
+  z-index: 5;
+}
+
+.field {
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 40px;
+  padding: 0 6px;
+  border: none; background: none;
+  font-size: 16px;          /* ≥16px so iOS Safari doesn't auto-zoom on focus */
+  color: var(--ink-900);
+}
+.field::placeholder { color: var(--ink-500); }
+.field:focus-visible { outline: none; }
+
+.icon-btn {
+  flex: 0 0 auto;
+  width: 44px; height: 44px;
+  display: grid; place-items: center;
+  border-radius: 50%;
+  transition: transform 120ms var(--ease-out), background-color 160ms, opacity 160ms;
+}
+.breathe-btn { color: var(--bunny-lilac); }
+.breathe-btn:hover { background: rgba(201, 184, 242, .25); color: var(--bunny-focus); }
+.breathe-btn:active { transform: scale(.9); }
+
+.send-btn {
+  background: var(--bunny-rose-strong);
+  color: var(--ink-on-rose);
+  box-shadow: 0 4px 12px rgba(192, 78, 124, .38);
+}
+.send-btn:hover:not(:disabled) { transform: scale(1.05); }
+.send-btn:active:not(:disabled) { transform: scale(.9); }
+.send-btn:disabled { opacity: .4; cursor: default; box-shadow: none; }
+
+/* ----------------------------------------------------------
+   10. Disclaimer
+   ---------------------------------------------------------- */
+.disclaimer {
+  padding: 0 18px calc(10px + env(safe-area-inset-bottom));
+  font-size: 11.5px; line-height: 1.35;
+  color: var(--ink-700);            /* safety copy — higher contrast */
+  text-align: center;
+}
+
+/* ----------------------------------------------------------
+   11. Toast (cute error / notice)
+   ---------------------------------------------------------- */
+.toast {
+  position: fixed;
+  left: 50%; top: 16px;
+  transform: translateX(-50%) translateY(-12px);
+  z-index: 60;
+  max-width: min(360px, 90vw);
+  padding: 10px 16px;
+  font-size: 13px; font-weight: 500; text-align: center;
+  color: var(--ink-900);
+  background: var(--glass-bg-strong);
+  border: var(--glass-border);
+  border-radius: 999px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  opacity: 0;
+  transition: opacity 240ms var(--ease-out), transform 240ms var(--ease-out);
+  pointer-events: none;
+}
+.toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+/* ----------------------------------------------------------
+   12. Breathing overlay
+   ---------------------------------------------------------- */
+.breathe-overlay {
+  position: fixed; inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 45%, var(--bunny-lavender), var(--bunny-blush) 70%, var(--bunny-peach) 100%);
+  animation: overlayIn 300ms var(--ease-out);
+}
+.breathe-overlay[hidden] { display: none; }
+.breathe-overlay.closing { animation: overlayOut 280ms var(--ease-out) forwards; }
+
+.breathe-stage {
+  position: relative;
+  width: 280px; height: 280px;
+  display: grid; place-items: center;
+}
+.breathe-circle {
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255,255,255,.8), var(--bunny-rose) 70%);
+  box-shadow: 0 0 60px rgba(247, 168, 196, .6);
+  animation: breathe 16s cubic-bezier(.4, 0, .6, 1) infinite;
+}
+.breathe-ring {
+  position: absolute;
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  border: 1px solid var(--bunny-lilac);
+  opacity: .5;
+  animation: breatheRing 16s cubic-bezier(.4, 0, .6, 1) infinite;
+}
+.breathe-phase {
+  position: absolute;
+  font-family: var(--font-display);
+  font-size: 24px; font-weight: 500;
+  color: var(--ink-900);
+  text-shadow: 0 1px 8px rgba(255, 255, 255, .6);
+}
+.breathe-sub {
+  font-size: 13px; color: var(--ink-700);
+  text-align: center;
+}
+.breathe-exit {
+  padding: 12px 22px; min-height: 44px;
+  font-size: 14px; font-weight: 600;
+  color: var(--bunny-rose-strong);
+  background: var(--glass-bg-strong);
+  border: var(--glass-border);
+  border-radius: 999px;
+  -webkit-backdrop-filter: var(--glass-blur);
+  backdrop-filter: var(--glass-blur);
+  box-shadow: var(--glass-shadow);
+  transition: transform 140ms var(--ease-out);
+}
+.breathe-exit:hover { transform: translateY(-2px); }
+.breathe-exit:active { transform: scale(.96); }
+
+/* ----------------------------------------------------------
+   13. Floating hearts
+   ---------------------------------------------------------- */
+.hearts {
+  position: fixed; inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  overflow: hidden;
+}
+.heart {
+  position: absolute;
+  bottom: 18%;
+  font-size: 26px;
+  will-change: transform, opacity;
+  animation: heartRise var(--dur, 2s) var(--ease-out) forwards;
+}
+
+/* ----------------------------------------------------------
+   14. Keyframes
+   ---------------------------------------------------------- */
+@keyframes drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  100% { transform: translate(3%, 2%) scale(1.06); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes msgIn {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes typingBounce {
+  0%, 80%, 100% { transform: translateY(0);    opacity: .4; }
+  40%           { transform: translateY(-4px); opacity: 1; }
+}
+@keyframes hugPunch {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+@keyframes heartRise {
+  0%   { transform: translateY(0) translateX(0) rotate(0deg) scale(.6); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(-60vh) translateX(var(--tx, 0)) rotate(var(--r, 20deg)) scale(1); opacity: 0; }
+}
+@keyframes breathe {
+  0%   { transform: scale(1);   }
+  25%  { transform: scale(1.6); }
+  50%  { transform: scale(1.6); }
+  75%  { transform: scale(1);   }
+  100% { transform: scale(1);   }
+}
+@keyframes breatheRing {
+  0%   { transform: scale(1);    opacity: .5; }
+  25%  { transform: scale(1.25); opacity: .25; }
+  50%  { transform: scale(1.25); opacity: .25; }
+  75%  { transform: scale(1);    opacity: .5; }
+  100% { transform: scale(1);    opacity: .5; }
+}
+@keyframes overlayIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes overlayOut { from { opacity: 1; } to { opacity: 0; } }
+
+/* ----------------------------------------------------------
+   15. Reduced motion
+   ---------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    scroll-behavior: auto !important;
+  }
+  /* keep the breathing circle visible & static; JS drives phase text */
+  .breathe-circle { transform: scale(1.3); }
+}

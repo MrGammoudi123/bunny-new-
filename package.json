@@ -1,0 +1,13 @@
+{
+  "name": "pocket-bunny-ai",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A tiny, kind AI companion — a soft little gift that lives in her phone.",
+  "scripts": {
+    "dev": "netlify dev",
+    "deploy": "netlify deploy --prod"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

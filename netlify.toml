@@ -1,0 +1,35 @@
+# ============================================================
+#  Pocket Bunny AI — Netlify configuration
+# ============================================================
+# Static frontend is served from the public/ folder (so personal
+# files like the photo and the brief at the repo root are NEVER
+# published); the serverless function lives in netlify/functions.
+# No build step is needed.
+
+[build]
+  publish = "public"
+  functions = "netlify/functions"
+
+# Pin a modern Node runtime so the function can use the global
+# fetch() API with no extra dependencies.
+[build.environment]
+  NODE_VERSION = "20"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Friendly alias: the frontend can call /api/ask instead of the
+# long default function path. Both still work.
+[[redirects]]
+  from = "/api/ask"
+  to = "/.netlify/functions/ask-ai"
+  status = 200
+
+# Basic security headers for the static site.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Content-Type-Options = "nosniff"
+    X-Frame-Options = "SAMEORIGIN"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Pocket Bunny 🐰</title>
+  <meta name="description" content="A tiny, kind little companion — made just for you." />
+  <meta name="theme-color" content="#FFD9E2" />
+  <meta name="robots" content="noindex, nofollow" />
+
+  <!-- Fonts: Playfair Display (display) + Poppins (body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ===================== APP SHELL ===================== -->
+  <main class="app" id="app">
+
+    <!-- ---------- Header ---------- -->
+    <header class="app-header glass glass-strong">
+      <button class="avatar" id="avatarBtn" type="button" aria-label="Give Bunny a little tap">
+        <svg class="bunny-svg" viewBox="0 0 80 80" aria-hidden="true" focusable="false">
+          <!-- ears -->
+          <g>
+            <ellipse cx="30" cy="22" rx="7" ry="18" fill="#ffffff" stroke="#F7A8C4" stroke-width="2" transform="rotate(-12 30 22)" />
+            <ellipse cx="30" cy="22" rx="3" ry="12" fill="#FFD9E2" transform="rotate(-12 30 22)" />
+            <ellipse cx="50" cy="22" rx="7" ry="18" fill="#ffffff" stroke="#F7A8C4" stroke-width="2" transform="rotate(12 50 22)" />
+            <ellipse cx="50" cy="22" rx="3" ry="12" fill="#FFD9E2" transform="rotate(12 50 22)" />
+          </g>
+          <!-- head -->
+          <circle cx="40" cy="48" r="22" fill="#ffffff" stroke="#F7A8C4" stroke-width="2" />
+          <!-- eyes -->
+          <circle cx="32" cy="46" r="2.6" fill="#4A2C3A" />
+          <circle cx="48" cy="46" r="2.6" fill="#4A2C3A" />
+          <!-- blush -->
+          <circle cx="28" cy="53" r="3.4" fill="#F7A8C4" opacity="0.5" />
+          <circle cx="52" cy="53" r="3.4" fill="#F7A8C4" opacity="0.5" />
+          <!-- nose -->
+          <path d="M40 50 l-3 3 h6 z" fill="#C04E7C" />
+        </svg>
+        <span class="avatar-status" aria-hidden="true"></span>
+      </button>
+
+      <div class="brand">
+        <h1 id="brandTitle">Pocket Bunny</h1>
+        <p class="status" id="brandStatus">here with you 🐰</p>
+      </div>
+
+      <button class="header-action" id="clearBtn" type="button" aria-label="Start a fresh chat" title="Start fresh">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="18" height="18">
+          <path d="M4 7h16M9 7V5a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2m1 0v12a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2V7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+      </button>
+    </header>
+
+    <!-- ---------- Greeting ---------- -->
+    <section class="greeting">
+      <h2 id="greeting" class="greeting-title">Hi Mine 🌷</h2>
+      <p class="greeting-sub" id="greetingSub">Whatever today was, you don't carry it alone.</p>
+      <button class="daily-btn" id="dailyBtn" type="button">
+        <span aria-hidden="true">💌</span> A little something from Bunny
+      </button>
+    </section>
+
+    <!-- ---------- Mood chips ---------- -->
+    <nav class="moods" id="moods" aria-label="Tap how you're feeling"></nav>
+
+    <!-- ---------- Chat log ---------- -->
+    <section class="chat" id="chat" role="log" aria-live="polite" aria-relevant="additions" aria-label="Conversation with Pocket Bunny">
+      <p class="empty-chat" id="emptyChat">It's just us here, Mine. Say anything — or tap a feeling above. 🐰💕</p>
+    </section>
+
+    <!-- ---------- Composer ---------- -->
+    <form class="composer glass glass-strong" id="composer" autocomplete="off">
+      <button class="icon-btn breathe-btn" id="breatheBtn" type="button" aria-label="Open a breathing exercise" title="Breathe with me">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+          <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.6" />
+          <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.4" opacity="0.5" />
+        </svg>
+      </button>
+
+      <label class="vh" for="field">Message Pocket Bunny</label>
+      <input
+        class="field"
+        id="field"
+        type="text"
+        name="message"
+        placeholder="Tell Bunny what's on your heart…"
+        maxlength="1000"
+        autocomplete="off"
+        enterkeyhint="send"
+      />
+
+      <button class="icon-btn send-btn" id="sendBtn" type="submit" aria-label="Send to Bunny" disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false" width="20" height="20">
+          <path d="M4 12l15-7-6 7 6 7-15-7z" fill="currentColor" />
+        </svg>
+      </button>
+    </form>
+
+    <p class="disclaimer" id="disclaimer">
+      Bunny is a little pocket of love, not a doctor or therapist. For anything heavy or unsafe, please reach out to someone you trust. 🌷
+    </p>
+  </main>
+
+  <!-- ===================== BREATHING OVERLAY ===================== -->
+  <div class="breathe-overlay" id="breatheOverlay" role="dialog" aria-modal="true" aria-label="Breathing exercise" hidden>
+    <div class="breathe-stage">
+      <div class="breathe-ring" aria-hidden="true"></div>
+      <div class="breathe-circle" id="breatheCircle" aria-hidden="true"></div>
+      <p class="breathe-phase" id="breathePhase" aria-live="polite">Breathe in</p>
+    </div>
+    <p class="breathe-sub">Follow the circle with me, Mine 🐰</p>
+    <button class="breathe-exit" id="breatheExit" type="button">I'm okay now ✨</button>
+  </div>
+
+  <!-- floating hearts layer -->
+  <div class="hearts" id="hearts" aria-hidden="true"></div>
+
+  <script src="script.js" defer></script>
+</body>
+</html>
